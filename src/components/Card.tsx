@@ -8,13 +8,20 @@ const CardContainer = styled.div`
     align-items: center;
     font-size: 24px;
     border: solid 1px #707070;
+    cursor: pointer;
+
+    &:hover{
+        background-color: 
+        #378b646c
+    }
 `;
 interface CardProps {
-  title: string;
+    title: string;
+    onClick: ()=> void
 }
 
-const Card = ({title}: CardProps) => {
-  return <CardContainer>{title}</CardContainer>;
+const Card = ({title, onClick}: CardProps) => {
+  return <CardContainer onClick={onClick}>{title}</CardContainer>;
 };
 
 export default Card;
