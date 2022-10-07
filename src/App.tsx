@@ -5,6 +5,7 @@ import Edit from './components/Edit';
 import Memo from './interfaces/Memo';
 import Cookies from 'js-cookie';
 import {RiDeleteBin6Line} from '@react-icons/all-files/ri/RiDeleteBin6Line'
+import useMemos from './store/memoStore';
 
 
 const CardContainer = styled.div`
@@ -29,8 +30,9 @@ const PlusCard = styled.div`
   margin: 80px 20px;
   cursor: pointer;
 `;
+// 쿠키 방식 저장 방법 적용한 경우
 
-function App() {
+/* function App() {
   console.log(Cookies.get('memo'));
   const [mode, setMode] = useState<'edit' | 'view'>('view')
   
@@ -79,6 +81,48 @@ function App() {
       {mode === 'edit' && <Edit setMode={setMode} memoIdx={selectedMemoIdx} />}
     </>
   );
-}
+} */
 
+// localstorage 적용한 경우
+
+
+function App() {
+  const [mode, setMode] = useState<'edit' | 'view'>('view');
+  const { setSelectedIndex, memoList, clear } = useMemos();
+  return (
+    <>
+      {mode === 'view' && (
+        <CardContainer>
+          {memoList.map((memo, idx) => (
+            <Card
+              key={idx}
+              onClick={() => {
+                setSelectedIndex(idx);
+                setMode('edit');
+              }}
+              title={memo.title}
+            />
+          ))}
+          <PlusCard
+            onClick={() => {
+              setSelectedIndex(null);
+              setMode('edit');
+            }}
+          >
+            +
+          </PlusCard>
+          <PlusCard
+            onClick={() => {
+              setSelectedIndex(null);
+              clear();
+            }}
+          >
+            <RiDeleteBin6Line />
+          </PlusCard>
+        </CardContainer>
+      )}
+      {mode === 'edit' && <Edit setMode={setMode}/>}
+    </>
+  );
+}
 export default App;
